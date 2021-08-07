@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema.define(version: 2021_08_07_031721) do
 
-ActiveRecord::Schema.define(version: 2021_08_05_125311) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,14 @@ ActiveRecord::Schema.define(version: 2021_08_05_125311) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "category_ingredients", force: :cascade do |t|
+    t.bigint "ingredient_id", null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_category_ingredients_on_category_id"
+    t.index ["ingredient_id"], name: "index_category_ingredients_on_ingredient_id"
+  end
 
   create_table "ingredients", force: :cascade do |t|
     t.string "item_name"
@@ -72,8 +80,10 @@ ActiveRecord::Schema.define(version: 2021_08_05_125311) do
     t.index ["restaurant_id"], name: "index_users_on_restaurant_id"
   end
 
-  add_foreign_key "users", "restaurants"
+  add_foreign_key "category_ingredients", "categories"
+  add_foreign_key "category_ingredients", "ingredients"
   add_foreign_key "ingredients", "orders"
   add_foreign_key "orders", "restaurants"
   add_foreign_key "orders", "users"
+  add_foreign_key "users", "restaurants"
 end
